@@ -1,0 +1,41 @@
+﻿@model KintoneDeployTool.DataAccess.DomainModel.MstDeployPreset
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>デプロイプリセットマスタ(削除)</h1>
+<div class="description_under_title">
+    この画面はデプロイする対象アプリのFromToのマスタ管理です<br>
+    ルックアップ,関連テーブルを含むアプリの場合は<a href="@Url.Action("Index", "MstKintoneAppMappings")">こちら</a>からマスタ設定をしてください
+</div>
+<div>
+    <h4>TrnDeployPreset</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PresetName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PresetName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MstDeployPresetId" />
+        <input type="submit" value="削除" class="btn btn-danger" /> |
+        <a asp-action="Index">一覧へ戻る</a>
+    </form>
+</div>

@@ -1,0 +1,11 @@
+エラーメッセージ日本語化
+https://www.nextdoorwith.info/wp/se/asp-net-core-validation-default-japanese-message/
+
+エラーメッセージの表示について
+https://sorceryforce.net/ja/tips/asp-net-core-validation-summary-test
+
+標準DIについて
+https://tech-lab.sios.jp/archives/16092
+
+必須チェックについて
+https://blog.xin9le.net/entry/2018/10/01/021154

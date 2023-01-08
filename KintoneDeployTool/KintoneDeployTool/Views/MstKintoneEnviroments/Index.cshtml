@@ -1,0 +1,77 @@
+﻿@model IEnumerable<KintoneDeployTool.DataAccess.DomainModel.MstKintoneEnviroment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script type="text/javascript" src="~/js/disp_MstKintoneEnviroments.ts.js"></script>
+
+<p>
+    <a asp-controller="Home" asp-action="Index"
+       class="col-md-6">
+        ホーム
+    </a>
+</p>
+
+<h1>kintone環境マスタ(一覧)</h1>
+<div class="description_under_title">
+    この画面はデプロイの元・先の環境情報のマスタ管理です<br>
+    同期ボタンで環境内のアプリ情報が追加・更新・削除されます
+</div>
+<input type="hidden" id="env_sync_url" value="@Url.Action("Sync")" disabled />
+<button id="env_sync_btn">
+    同期
+</button>
+
+<p>
+    <a asp-action="Create">新規作成</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EnviromentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubDomain)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnviromentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubDomain)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MstKintoneEnviromentID">編集</a> |
+                    <a asp-action="Details" asp-route-id="@item.MstKintoneEnviromentID">詳細</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MstKintoneEnviromentID">削除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

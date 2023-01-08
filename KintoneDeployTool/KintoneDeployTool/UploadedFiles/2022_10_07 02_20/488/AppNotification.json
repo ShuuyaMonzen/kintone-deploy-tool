@@ -1,0 +1,29 @@
+﻿{
+  "notifications": [
+    {
+      "entity": {
+        "type": "FIELD_ENTITY",
+        "code": "更新者"
+      },
+      "includeSubs": false,
+      "recordAdded": false,
+      "recordEdited": false,
+      "commentAdded": true,
+      "statusChanged": false,
+      "fileImported": false
+    },
+    {
+      "entity": {
+        "type": "FIELD_ENTITY",
+        "code": "作成者"
+      },
+      "includeSubs": false,
+      "recordAdded": false,
+      "recordEdited": false,
+      "commentAdded": true,
+      "statusChanged": false,
+      "fileImported": false
+    }
+  ],
+  "notifyToCommenter": true
+}

@@ -1,0 +1,96 @@
+﻿@using KintoneDeployTool.DataAccess.DomainModel
+@model KintoneDeployTool.DataAccess.DomainModel.MstKintoneEnviroment
+
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>kintone環境マスタ(作成)</h1>
+<div class="description_under_title">この画面はデプロイの元・先の環境情報のマスタ管理です</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EnviromentName" class="control-label"></label>
+                <input asp-for="EnviromentName" class="form-control" />
+                <span asp-validation-for="EnviromentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubDomain" class="control-label"></label>
+                <input asp-for="SubDomain" class="form-control" />
+                <span asp-validation-for="SubDomain" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserID" class="control-label"></label>
+                <input asp-for="UserID" class="form-control" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CreatedAt" class="control-label"></label>
+                <input asp-for="CreatedAt" class="form-control" value="2000-01-01T00:00" />
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="UpdatedAt" class="control-label"></label>
+                <input asp-for="UpdatedAt" class="form-control" value="2000-01-01T00:00" />
+                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+            </div>
+
+            <input type="submit" asp-controller="MstKintoneEnviroments" asp-action="AddDetailsOnCreate"
+                   class="col-md-6 btn btn-secondary" value="行を追加" />
+            @if (Model?.MstKintoneApps?.Any() ?? false)
+            {
+                var detail = new MstKintoneApp();
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th hidden></th>
+                            <th>
+                                @Html.DisplayNameFor(model => detail.AppId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => detail.AppName)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.MstKintoneApps.Count; i++)
+                        {
+                            <tr>
+                                <td hidden>
+                                    @Html.TextBoxFor(model => model.MstKintoneApps[i].MstKintoneAppID)
+                                    @Html.TextBoxFor(model => model.MstKintoneApps[i].MstKintoneEnviromentID)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.MstKintoneApps[i].AppId)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.MstKintoneApps[i].AppName)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">一覧へ戻る</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<KintoneDeployTool.DataAccess.DomainModel.MstKintoneAppMapping>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-controller="Home" asp-action="Index"
+       class="col-md-6">
+        ホーム
+    </a>
+</p>
+
+<h1>kintoneアプリ対応表マスタ(一覧)</h1>
+<div class="description_under_title">
+    この画面はkintone環境間のアプリ対応表のマスタ管理です<br>
+    これはルックアップ、関連テーブルのデプロイ時に使用するための情報です。<br>
+    ルックアップ、関連テーブルを含むデプロイの場合、以下の手順を踏んでください。<br>
+    ①kintoneアプリ対応表マスタ(一覧)から新規作成ボタンを押下<br>
+    ②kintoneアプリ対応表マスタ(作成)にてアプリ対応表を保存<br>
+    ③kintoneアプリ対応表マスタ(一覧)にて「デプロイプリセットを作成」を押下<br>
+    ④kintoneアプリ対応表マスタ(デプロイプリセット作成)にてデプロイを実施する対象にチェックをつけ保存
+</div>
+
+<p>
+    <a asp-action="Create">新規作成</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MstKintoneAppMappingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MstKintoneEnviroment1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MstKintoneEnviroment2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MstKintoneAppMappingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MstKintoneEnviroment1.EnviromentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MstKintoneEnviroment2.EnviromentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MstKintoneAppMappingID">編集</a> |
+                <a asp-action="Details" asp-route-id="@item.MstKintoneAppMappingID">詳細</a> |
+                <a asp-action="CopyToMstDeployPreset" asp-route-id="@item.MstKintoneAppMappingID">デプロイプリセットを作成</a> |
+                <a asp-action="Delete" asp-route-id="@item.MstKintoneAppMappingID">削除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,29 @@
+﻿{
+  "reports": {
+    "グラフAAA": {
+      "id": "6397665",
+      "chartType": "BAR",
+      "chartMode": "NORMAL",
+      "name": "グラフAAA",
+      "index": "0",
+      "groups": [
+        {
+          "code": "ドロップダウン"
+        }
+      ],
+      "aggregations": [
+        {
+          "type": "COUNT"
+        }
+      ],
+      "filterCond": "",
+      "sorts": [
+        {
+          "by": "TOTAL",
+          "order": "DESC"
+        }
+      ],
+      "periodicReport": null
+    }
+  }
+}

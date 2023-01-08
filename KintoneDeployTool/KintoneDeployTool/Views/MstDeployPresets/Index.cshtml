@@ -1,0 +1,58 @@
+﻿@model IEnumerable<KintoneDeployTool.DataAccess.DomainModel.MstDeployPreset>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-controller="Home" asp-action="Index"
+       class="col-md-6">
+        ホーム
+    </a>
+</p>
+
+<h1>デプロイプリセットマスタ(一覧)</h1>
+<div class="description_under_title">
+    この画面はデプロイする対象アプリのFromToのマスタ管理です<br>
+    ルックアップ,関連テーブルを含むアプリの場合は<a href="@Url.Action("Index", "MstKintoneAppMappings")">こちら</a>からマスタ設定をしてください
+</div>
+
+<p>
+    <a asp-action="Create">新規作成</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PresetName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PresetName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MstDeployPresetId">編集</a> |
+                <a asp-action="Details" asp-route-id="@item.MstDeployPresetId">詳細</a> |
+                <a asp-action="Delete" asp-route-id="@item.MstDeployPresetId">削除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

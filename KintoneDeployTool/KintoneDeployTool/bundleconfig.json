@@ -1,0 +1,25 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/spin.min.js",
+    "inputFiles": [
+      "node_modules/spin.js/spin.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/axios.min.js",
+    "inputFiles": [
+      "node_modules/axios/dist/axios.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/sweetalert2.min.js",
+    "inputFiles": [
+      "node_modules/sweetalert2/dist/sweetalert2.min.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": false
+    },
+    "sourceMap": false
+  }
+]

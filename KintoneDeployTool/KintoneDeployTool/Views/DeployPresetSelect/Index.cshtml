@@ -1,0 +1,31 @@
+﻿@model KintoneDeployTool.ViewModels.DeployPresetSelectViewModel
+
+<p>
+    <a asp-controller="Home" asp-action="Index"
+       class="col-md-6">
+        ホーム
+    </a>
+</p>
+
+<script type="text/javascript" src="~/js/disp_DeployPresetSelect.ts.js"></script>
+
+<h1>デプロイ(デプロイプリセット選択)</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="" asp-action="Index" method="GET">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="DeployPresetsSelectList">デプロイ情報プリセットを選択してください。</label>
+                    <select asp-for="@Model.TrnDeployPresetId" class="form-control tom-select" asp-items="Model.DeployPresetsSelectList"></select>
+                    <span asp-validation-for="DeployPresetsSelectList"></span>
+                </div>
+
+                <button asp-controller="Deploy" asp-action="Index"
+                        class="col-md-6">
+                    次へ
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

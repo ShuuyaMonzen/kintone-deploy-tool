@@ -1,0 +1,92 @@
+﻿@using KintoneDeployTool.DataAccess.DomainModel
+@model KintoneDeployTool.DataAccess.DomainModel.MstKintoneEnviroment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>kintone環境マスタ(詳細)</h1>
+<div class="description_under_title">この画面はデプロイの元・先の環境情報のマスタ管理です</div>
+
+<div>
+    <h4>MstKintoneEnviroment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EnviromentName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EnviromentName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubDomain)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubDomain)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class="col-sm-10">
+            ********
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+    </dl>
+
+    @if (Model.MstKintoneApps?.Any() ?? false)
+    {
+        var detail = new MstKintoneApp();
+        <table class="table">
+            <thead>
+                <tr>
+                    <th hidden></th>
+                    <th>
+                        @Html.DisplayNameFor(model => detail.AppId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => detail.AppName)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.MstKintoneApps.Count; i++)
+                {
+                    <tr>
+                        <td hidden>
+                            @Html.TextBoxFor(model => model.MstKintoneApps[i].MstKintoneAppID)
+                            @Html.TextBoxFor(model => model.MstKintoneApps[i].MstKintoneEnviromentID)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.MstKintoneApps[i].AppId)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => model.MstKintoneApps[i].AppName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MstKintoneEnviromentID">編集</a> |
+    <a asp-action="Index">一覧へ戻る</a>
+</div>

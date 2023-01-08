@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - KintoneDeployTool</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/spin.css" />
+    <link rel="stylesheet" href="~/css/tom-select.bootstrap5.min.css" />
+    <style type="text/css">
+        #layer {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div id="layer" hidden></div>
+    <div id="spin-area" hidden></div>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

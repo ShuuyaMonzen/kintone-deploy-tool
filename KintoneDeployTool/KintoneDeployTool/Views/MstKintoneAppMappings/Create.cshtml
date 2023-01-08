@@ -1,0 +1,124 @@
+﻿@using KintoneDeployTool.DataAccess.DomainModel
+@model KintoneDeployTool.DataAccess.DomainModel.MstKintoneAppMapping
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<script type="text/javascript" src="~/js/disp_MstKintoneAppMappings.ts.js"></script>
+
+<h1>kintoneアプリ対応表マスタ(作成)</h1>
+<div class="description_under_title">
+    この画面はkintone環境間のアプリ対応表のマスタ管理です<br>
+    これはルックアップ、関連テーブルのデプロイ時に使用するための情報です。<br>
+    ルックアップ、関連テーブルを含むデプロイの場合、以下の手順を踏んでください。<br>
+    ①kintoneアプリ対応表マスタ(一覧)から新規作成ボタンを押下<br>
+    ②kintoneアプリ対応表マスタ(作成)にてアプリ対応表を保存<br>
+    ③kintoneアプリ対応表マスタ(一覧)にて「デプロイプリセットを作成」を押下<br>
+    ④kintoneアプリ対応表マスタ(デプロイプリセット作成)にてデプロイを実施する対象にチェックをつけ保存
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row col-md-12">
+                <div class="row col-md-12">
+                    <div class="form-group">
+                        <label asp-for="MstKintoneAppMappingName" class="control-label"></label>
+                        <input asp-for="MstKintoneAppMappingName" class="form-control" />
+                        <span asp-validation-for="MstKintoneAppMappingName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row col-md-8">
+                    <div class="col-md-5 p-0">
+                        <div class="form-group">
+                            <label asp-for="MstKintoneEnviromentID1" class="control-label"></label>
+                            <select asp-for="MstKintoneEnviromentID1" class="form-control tom-select" asp-items="ViewBag.MstKintoneEnviromentID1"></select>
+                            <span asp-validation-for="MstKintoneEnviromentID1" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5 p-0">
+                        <div class="form-group">
+                            <label asp-for="MstKintoneEnviromentID2" class="control-label"></label>
+                            <select asp-for="MstKintoneEnviromentID2" class="form-control tom-select" asp-items="ViewBag.MstKintoneEnviromentID2"></select>
+                            <span asp-validation-for="MstKintoneEnviromentID2" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="hidden" asp-for="MstKintoneAppMappingID" />
+                    <div class="form-group" hidden>
+                        <label asp-for="CreatedAt" class="control-label"></label>
+                        <input asp-for="CreatedAt" class="form-control" value="2000-01-01T00:00" />
+                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden>
+                        <label asp-for="UpdatedAt" class="control-label"></label>
+                        <input asp-for="UpdatedAt" class="form-control" value="2000-01-01T00:00" />
+                        <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row col-md-4">
+                <input type="submit" asp-action="AddDetailsOnCreate"
+                       class="col-md-6 btn btn-secondary" value="行を追加" />
+            </div>
+
+            <div class="row col-md-12">
+                @if (Model?.MstKintoneAppMappingDetails?.Any() ?? false)
+                {
+                    var detail = new MstKintoneAppMappingDetail();
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th hidden></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => detail.MstKintoneAppID1)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => detail.MstKintoneAppID2)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.MstKintoneAppMappingDetails.Count; i++)
+                            {
+                                <tr>
+                                    <td hidden>
+                                        @Html.TextBoxFor(model => model.MstKintoneAppMappingDetails[i].MstKintoneAppMappingDetailID)
+                                        @Html.TextBoxFor(model => model.MstKintoneAppMappingDetails[i].MstKintoneAppMappingID)
+                                    </td>
+                                    <td>
+                                        <select asp-for="@Model.MstKintoneAppMappingDetails[i].MstKintoneAppID1" class="form-control tom-select" asp-items="ViewBag.MstKintoneAppID1"></select>
+                                    </td>
+                                    <td>
+                                        <select asp-for="@Model.MstKintoneAppMappingDetails[i].MstKintoneAppID2" class="form-control tom-select" asp-items="ViewBag.MstKintoneAppID2"></select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">一覧へ戻る</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

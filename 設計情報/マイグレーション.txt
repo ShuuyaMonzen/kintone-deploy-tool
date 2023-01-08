@@ -1,0 +1,6 @@
+Add-Migration InitialCreate
+Add-Migration (以降名)
+Update-Database
+
+※マイグレーションの削除コマンド
+Remove-Migration

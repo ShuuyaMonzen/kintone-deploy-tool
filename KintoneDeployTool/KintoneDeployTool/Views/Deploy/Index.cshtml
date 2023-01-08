@@ -1,0 +1,95 @@
+﻿@model KintoneDeployTool.ViewModels.DeployViewModel
+
+
+<script type="text/javascript" src="~/js/disp_deploy.ts.js"></script>
+
+<p>
+    <a asp-controller="Home" asp-action="Index"
+       class="col-md-6">
+        ホーム
+    </a>
+</p>
+
+<h1>デプロイ</h1>
+<div class="description_under_title">
+    デプロイプリセット名 : @Html.DisplayFor(model => model.PresetName)<br>
+</div>
+
+<input type="hidden" asp-for="TrnDeployPresetId" id="TrnDeployPresetId" />
+<div asp-validation-summary="All" class="text-danger"></div>
+<div class="container-fluid">
+    <div class="row col-md-12">
+        <input type="hidden" id="get_confirm_message_url" value="@Url.Action("GetConfirmMessage")" disabled />
+        <div class="row col-md-12">
+            <input type="hidden" id="get_backup_url" value="@Url.Action("GetBackup")" disabled />
+            <input type="submit" id="get_backup_btn" class="col-md-12 deploy_btn" value="バックアップ取得" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="file" id="restore_backup_file" class="col-md-6" accept=".zip"/>
+            <input type="hidden" id="restore_backup_url" value="@Url.Action("RestoreBackup")" disabled />
+            <input type="submit" id="restore_backup_btn" class="col-md-6 restore_btn require-check-deploy-apply" value="バックアップから復元" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="auto_deploy_url" value="@Url.Action("AutoDeploy")" disabled />
+            <input type="submit" id="auto_deploy_btn" class="col-md-12 deploy_btn require-check-deploy-apply" value="全自動デプロイ" />
+        </div>
+
+        <div class="row col-md-12 pr-0">
+            <hr class="col-md-12 p-0" size="5" color="black" noshade/>
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="form_deploy_url" value="@Url.Action("FormDeploy")" disabled />
+            <input type="submit" id="form_deploy_btn" class="col-md-12 deploy_btn require-check-deploy-apply" value="フォームデプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="list_view_deploy_url" value="@Url.Action("ListViewDeploy")" disabled />
+            <input type="submit" id="list_view_deploy_btn" class="col-md-12 deploy_btn" value="一覧デプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="graph_deploy_url" value="@Url.Action("GraphDeploy")" disabled />
+            <input type="submit" id="graph_deploy_btn" class="col-md-12 deploy_btn" value="グラフ設定デプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="general_setting_deploy_url" value="@Url.Action("GeneralSettingDeploy")" disabled />
+            <input type="submit" id="general_setting_deploy_btn" class="col-md-12 deploy_btn" value="一般設定デプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="process_deploy_url" value="@Url.Action("ProcessDeploy")" disabled />
+            <input type="submit" id="process_deploy_btn" class="col-md-12 deploy_btn" value="プロセス管理デプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="app_notification_deploy_url" value="@Url.Action("AppNotificationDeploy")" disabled />
+            <input type="submit" id="app_notification_deploy_btn" class="col-md-12 deploy_btn" value="アプリの条件通知デプロイ" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="record_notification_deploy_url" value="@Url.Action("RecordNotificationDeploy")" disabled />
+            <input type="submit" id="record_notification_deploy_btn" class="col-md-12 deploy_btn" value="レコードの条件通知" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="reminder_notification_deploy_url" value="@Url.Action("ReminderNotificationDeploy")" disabled />
+            <input type="submit" id="reminder_notification_deploy_btn" class="col-md-12 deploy_btn" value="リマインダーの条件通知" />
+        </div>
+
+        <div class="row col-md-12">
+            <input type="hidden" id="customize_files_deploy_url" value="@Url.Action("CustomizeFilesDeploy")" disabled />
+            <input type="submit" id="customize_files_deploy_btn" class="col-md-12 deploy_btn" value="JS,CSSファイルデプロイ" />
+        </div>
+
+
+        <div class="row col-md-12">
+            <input type="hidden" id="app_action_deploy_url" value="@Url.Action("AppActionDeploy")" disabled />
+            <input type="submit" id="app_action_deploy_btn" class="col-md-12 deploy_btn" value="アプリのアクションデプロイ" />
+        </div>
+
+    </div>
+</div>

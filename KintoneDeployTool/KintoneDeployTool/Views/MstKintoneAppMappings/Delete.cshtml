@@ -1,0 +1,59 @@
+﻿@model KintoneDeployTool.DataAccess.DomainModel.MstKintoneAppMapping
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>kintoneアプリ対応表マスタ(削除)</h1>
+<div class="description_under_title">
+    この画面はkintone環境間のアプリ対応表のマスタ管理です<br>
+    これはルックアップ、関連テーブルのデプロイ時に使用するための情報です。<br>
+    ルックアップ、関連テーブルを含むデプロイの場合、以下の手順を踏んでください。<br>
+    ①kintoneアプリ対応表マスタ(一覧)から新規作成ボタンを押下<br>
+    ②kintoneアプリ対応表マスタ(作成)にてアプリ対応表を保存<br>
+    ③kintoneアプリ対応表マスタ(一覧)にて「デプロイプリセットを作成」を押下<br>
+    ④kintoneアプリ対応表マスタ(デプロイプリセット作成)にてデプロイを実施する対象にチェックをつけ保存
+</div>
+
+<div>
+    <h4>MstKintoneAppMapping</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MstKintoneAppMappingName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MstKintoneAppMappingName)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MstKintoneEnviroment1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MstKintoneEnviroment1.EnviromentName)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MstKintoneEnviroment2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MstKintoneEnviroment2.EnviromentName)
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MstKintoneAppMappingID" />
+        <input type="submit" value="削除" class="btn btn-danger" /> |
+        <a asp-action="Index">一覧へ戻る</a>
+    </form>
+</div>
