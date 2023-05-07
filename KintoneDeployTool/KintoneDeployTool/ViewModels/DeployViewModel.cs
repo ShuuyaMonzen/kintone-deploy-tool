@@ -10,6 +10,8 @@ namespace KintoneDeployTool.ViewModels
 
         public string PresetName { get; set; }
 
+        public string UrlKind { get; set; }
+
         public string LogMessage { get; set; }
     }
 }

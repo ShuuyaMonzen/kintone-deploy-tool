@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             //postする
             let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
-            let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
+            let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value + '&UrlKind=' + uniqueStrOfId;
             var checkResult = await axios.post(targetUrlRequireCheck, null, {
                 'headers': {
                     'Content-Type': 'application/json'

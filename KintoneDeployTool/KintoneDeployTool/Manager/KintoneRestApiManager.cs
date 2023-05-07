@@ -1,6 +1,7 @@
 ﻿using KintoneDeployTool.Common;
 using KintoneDeployTool.DataAccess.DomainModel;
 using KintoneDeployTool.Utils;
+using KintoneDeployTool.ViewModels;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,12 @@ namespace KintoneDeployTool.Manager
 
             public bool IsInfo { get; set; }
 
-            public bool IsNoProblem { 
-                get {
+            public bool IsNoProblem
+            {
+                get
+                {
                     return !IsError && !IsWarn && !IsInfo;
-                } 
+                }
             }
 
             public string Message { get; set; }
@@ -559,9 +562,15 @@ namespace KintoneDeployTool.Manager
         /// </summary>
         /// <param name="mstDeployPreset"></param>
         /// <returns></returns>
-        public static async Task<CheckResult> GetComfirmMessage(MstDeployPreset mstDeployPreset)
+        public static async Task<CheckResult> GetComfirmMessage(DeployViewModel vm, MstDeployPreset mstDeployPreset)
         {
             var result = new CheckResult();
+
+            if (vm.UrlKind != "auto_deploy" &&
+                vm.UrlKind != "form_deploy")
+            {
+                return result;
+            }
 
             var dependencyResolvedItem = await GetDependencyResolvedItemAsync(mstDeployPreset);
 
@@ -579,7 +588,7 @@ namespace KintoneDeployTool.Manager
                 result.Message = "アプリマッピングが指定されていないため、参照項目(ルックアップ,関連レコード一覧)のデプロイができません。";
             }
 
-                return result;
+            return result;
         }
 
         public static async Task FormPartsDeployAllApp(MstDeployPreset mstDeployPreset)

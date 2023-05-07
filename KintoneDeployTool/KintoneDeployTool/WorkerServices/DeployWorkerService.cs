@@ -61,7 +61,7 @@ namespace KintoneDeployTool.WorkerServices
             try
             {
                 var trnDeployPreset = await DeployPresetRepository.GetTrnDeployPreset(vm.TrnDeployPresetId.Value);
-                var result = await KintoneRestApiManager.GetComfirmMessage(trnDeployPreset);
+                var result = await KintoneRestApiManager.GetComfirmMessage(vm, trnDeployPreset);
                 return result;
             }
             catch (Exception e)
