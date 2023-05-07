@@ -52,12 +52,12 @@ namespace KintoneDeployTool.Controllers
                 return BadRequest(ModelState);
             }
 
-            await Service.Restore(vm, postedFile, _hostingEnvironment.ContentRootPath);
+            await Service.Restore(vm, postedFile, Directory.GetCurrentDirectory());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok();
+            return Ok(vm);
         }
 
         public async Task<IActionResult> AutoDeploy(DeployViewModel vm)

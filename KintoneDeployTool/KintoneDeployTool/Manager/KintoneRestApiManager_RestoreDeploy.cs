@@ -11,7 +11,7 @@ namespace KintoneDeployTool.Manager
 {
     public partial class KintoneRestApiManager
     {
-        public static async Task Restore(MstDeployPreset mstDeployPreset, string restoreDirectoryPath)
+        public static async Task<string> Restore(MstDeployPreset mstDeployPreset, string restoreDirectoryPath)
         {
             List<string> errorList = new List<string>();
             List<string> errorMsgList = new List<string>();
@@ -91,24 +91,6 @@ namespace KintoneDeployTool.Manager
                 }
             }
 
-            //フィールド
-            try
-            {
-                await FormPartsDeployAllApp(mstDeployPreset);
-            }
-            catch (Exception e)
-            {
-                if (e is AggregateException ex)
-                {
-                    errorMsgList.Add(ex.InnerException.Message);
-                }
-                else
-                {
-                    errorMsgList.Add(e.Message);
-                }
-                errorList.Add("フィールド");
-            }
-
             foreach (var mstDeployFromToInfo in mstDeployPreset.MstDeployFromToInfos)
             {
                 var baseDirectoryPath = Path.Combine(restoreDirectoryPath, mstDeployFromToInfo.DeployToMstKintoneApp.AppId.ToString());
@@ -118,6 +100,25 @@ namespace KintoneDeployTool.Manager
                     SiteKind = SiteKindEnum.DeployTo,
                     JsonKind = KintoneJsonKind.Deploy
                 };
+
+                //フィールド
+                try
+                {
+                    param.JsonKind = KintoneJsonKind.PartsList;
+                    await FormPartsDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
+                }
+                catch (Exception e)
+                {
+                    if (e is AggregateException ex)
+                    {
+                        errorMsgList.Add(ex.InnerException.Message);
+                    }
+                    else
+                    {
+                        errorMsgList.Add(e.Message);
+                    }
+                    errorList.Add("フィールド");
+                }
 
                 //プロセス管理
                 try
@@ -222,11 +223,11 @@ namespace KintoneDeployTool.Manager
                 try
                 {
                     param.JsonKind = KintoneJsonKind.AppPermission;
-                    RecordNotificationDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
+                    AppPermissionDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
                     param.JsonKind = KintoneJsonKind.RecordPermission;
-                    RecordNotificationDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
+                    RecordPermissionDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
                     param.JsonKind = KintoneJsonKind.FieldPermission;
-                    ReminderNotificationDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
+                    FieldPermissionDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
                 }
                 catch (Exception e)
                 {
@@ -245,7 +246,7 @@ namespace KintoneDeployTool.Manager
                 try
                 {
                     param.JsonKind = KintoneJsonKind.AppAction;
-                    RecordNotificationDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
+                    AppActionDeploy(mstDeployFromToInfo, ReadBackupJsonStr(baseDirectoryPath, param));
                 }
                 catch (Exception e)
                 {
@@ -261,27 +262,34 @@ namespace KintoneDeployTool.Manager
                 }
             }
 
+            var errorMsg = "";
             foreach (var mstDeployFromToInfo in mstDeployPreset.MstDeployFromToInfos)
             {
 
                 if (errorList.Any())
                 {
-                    Console.WriteLine("\r\n以下の復元に失敗しました。バックアップフォルダを確認してください。");
+                    errorMsg += "\r\n以下の復元に失敗しました。バックアップフォルダを確認してください。";
                     for (var i = 0; i < errorList.Count; i++)
                     {
                         var error = errorList[i];
-                        var errorMsg = errorMsgList[i];
-                        Console.WriteLine(error);
-                        Console.WriteLine(errorMsg + "\r\n");
+                        errorMsg += error + "\r\n";
+                        errorMsg += errorMsgList[i] + "\r\n";
                     }
                 }
                 else
                 {
-                    await DeployApplyAllApp(mstDeployPreset);
-                    Console.WriteLine("バックアップからの復元を正常に完了しました。\r\n");
-                    ConsoleUtil.WriteWarn("レコードの復元はされていません。レコードのバックアップファイルはrecord.csvです。");
+                    errorMsg += "バックアップからの復元を正常に完了しました。(適用は手動にて実施してください)\r\n";
+                    errorMsg += "レコードの復元はされていません。レコードのバックアップファイルはrecord.csvです。\r\n";
+                    return errorMsg;
                 }
             }
+
+            if (!String.IsNullOrEmpty(errorMsg))
+            {
+                throw new Exception(errorMsg);
+            }
+
+            return null;
         }
 
     }

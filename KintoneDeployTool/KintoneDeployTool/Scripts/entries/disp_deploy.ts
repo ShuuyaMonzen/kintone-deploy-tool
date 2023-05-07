@@ -69,27 +69,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 成功の処理
                 Swal.fire({
                     icon: 'success',
-                    title: '成功'
+                    title: '成功',
+                    html: resp.data?.logMessage
                 });
             }).catch((err) => {
                 // エラーの処理
                 console.error(err);
                 spinnerUtil.stopSpinner();
 
-                let errorMsg = err.response.data.param[0] as String;
-                var errorDetails = errorMsg.split('{"code"');
-                if (errorDetails.length >= 2) {
+                var alreadyShow = false;
+                if (err.response.data.param) {
+                    let errorMsg = err.response.data.param[0] as String;
+                    var errorDetails = errorMsg.split('{"code"');
+                    if (errorDetails.length >= 2) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'エラー',
+                            html: '{"code"' + errorDetails[1]
+                        });
+                        alreadyShow = true;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'エラー',
+                            html: errorMsg
+                        });
+                        alreadyShow = true;
+                    }
+                } else if (err.response.data[""]) {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: '{"code"' + errorDetails[1]
+                        html: err.response.data[""]
                     });
-                } else {
+                    alreadyShow = true;
+                }
+
+                if (!alreadyShow) {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: errorMsg
+                        html: JSON.stringify(err.response.data)
                     });
+                    alreadyShow = true;
                 }
             });
 
@@ -158,37 +180,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 'headers': {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then((args) => {
+            }).then((resp) => {
                 spinnerUtil.stopSpinner();
                 // 成功の処理
                 Swal.fire({
                     icon: 'success',
-                    title: '成功'
+                    title: '成功',
+                    html: resp.data?.logMessage
                 });
             }).catch((err) => {
                 // エラーの処理
                 console.error(err);
                 spinnerUtil.stopSpinner();
 
-                let errorMsg = err.response.data.param[0] as String;
-                var errorDetails = errorMsg.split('{"code"');
-                if (errorDetails.length >= 2) {
+                var alreadyShow = false;
+                if (err.response.data.param) {
+                    let errorMsg = err.response.data.param[0] as String;
+                    var errorDetails = errorMsg.split('{"code"');
+                    if (errorDetails.length >= 2) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'エラー',
+                            html: '{"code"' + errorDetails[1]
+                        });
+                        alreadyShow = true;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'エラー',
+                            html: errorMsg
+                        });
+                        alreadyShow = true;
+                    }
+                } else if (err.response.data[""]) {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: '{"code"' + errorDetails[1]
+                        html: err.response.data[""]
                     });
-                } else {
+                    alreadyShow = true;
+                }
+
+                if (!alreadyShow) {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: errorMsg
+                        html: JSON.stringify(err.response.data)
                     });
+                    alreadyShow = true;
                 }
             });
 
         });
     });
-
-
 });

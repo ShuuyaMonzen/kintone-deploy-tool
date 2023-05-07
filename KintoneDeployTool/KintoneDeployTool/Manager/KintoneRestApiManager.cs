@@ -567,7 +567,8 @@ namespace KintoneDeployTool.Manager
             var result = new CheckResult();
 
             if (vm.UrlKind != "auto_deploy" &&
-                vm.UrlKind != "form_deploy")
+                vm.UrlKind != "form_deploy" &&
+                vm.UrlKind != "restore_backup")
             {
                 return result;
             }
@@ -2795,10 +2796,12 @@ namespace KintoneDeployTool.Manager
         {
             var fileName = GetJsonFileName(requestParam.JsonKind);
             var filePath = Path.Combine(baseDirectoryPath, fileName);
-            var sr = new StreamReader(filePath, Encoding.UTF8);
+            using (var sr = new StreamReader(filePath, Encoding.UTF8))
+            {
 
-            string str = sr.ReadToEnd();
-            return str;
+                string str = sr.ReadToEnd();
+                return str;
+            }
         }
     }
 }

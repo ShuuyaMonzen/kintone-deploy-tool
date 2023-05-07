@@ -247,11 +247,12 @@ namespace KintoneDeployTool.WorkerServices
                     await postedFile.CopyToAsync(stream);
                 }
 
-                ZipFile.ExtractToDirectory(filePath, unzipDirectoryPath);
-                await KintoneRestApiManager.Restore(trnDeployPreset, unzipDirectoryPath);
+                ZipFile.ExtractToDirectory(filePath, unzipDirectoryPath, true);
+                vm.LogMessage = await KintoneRestApiManager.Restore(trnDeployPreset, unzipDirectoryPath);
 
                 File.Delete(filePath);
                 Directory.Delete(unzipDirectoryPath, true);
+
             }
             catch (Exception e)
             {
