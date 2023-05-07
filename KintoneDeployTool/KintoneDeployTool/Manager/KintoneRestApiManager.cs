@@ -1315,6 +1315,12 @@ namespace KintoneDeployTool.Manager
 
             var isEnviroment1 = mstKintoneAppMapping.MstKintoneEnviroment1.SubDomain == subDomain;
 
+            if ((isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Any()) ||
+                !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any())
+            {
+                throw new Exception("マッピング定義にないアプリを参照する関連テーブルがあります");
+            }
+
             var appId = (isEnviroment1 ?
                 mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Single().MstKintoneApp2.AppId :
                 mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Single().MstKintoneApp1.AppId);
@@ -1330,6 +1336,12 @@ namespace KintoneDeployTool.Manager
             var subDomain = mstDeployFromToInfo.DeployFromMstKintoneApp.MstKintoneEnviroment.SubDomain;
 
             var isEnviroment1 = mstKintoneAppMapping.MstKintoneEnviroment1.SubDomain == subDomain;
+
+            if ((isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Any()) ||
+                !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any())
+            {
+                throw new Exception("マッピング定義にないアプリを参照するルックアップがあります");
+            }
 
             var appId = (isEnviroment1 ?
                 mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Single().MstKintoneApp2.AppId :
