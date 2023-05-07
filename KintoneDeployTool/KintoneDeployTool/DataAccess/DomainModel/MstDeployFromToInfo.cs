@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,7 @@ namespace KintoneDeployTool.DataAccess.DomainModel
         public virtual MstDeployPreset MstDeployPreset { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("デプロイ元 KintoneアプリマスタID")]
         public int DeployFromMstKintoneAppID { set; get; }
 
@@ -29,6 +31,7 @@ namespace KintoneDeployTool.DataAccess.DomainModel
         public virtual MstKintoneApp DeployFromMstKintoneApp { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("デプロイ先 KintoneアプリマスタID")]
         public int DeployToMstKintoneAppID { set; get; }
 

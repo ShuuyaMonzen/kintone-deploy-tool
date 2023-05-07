@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -15,16 +16,22 @@ namespace KintoneDeployTool.DataAccess.DomainModel
         public int MstKintoneEnviromentID { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("環境名")]
         public string EnviromentName { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("サブドメイン")]
         public string SubDomain { set; get; }
 
+        [Required]
+        [BindRequired]
         [DisplayName("ユーザーID")]
         public string UserID { set; get; }
 
+        [Required]
+        [BindRequired]
         [DisplayName("パスワード")]
         public string Password { set; get; }
 

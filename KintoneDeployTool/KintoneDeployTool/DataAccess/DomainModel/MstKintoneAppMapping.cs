@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,6 +20,7 @@ namespace KintoneDeployTool.DataAccess.DomainModel
         public string MstKintoneAppMappingName { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("Kintone環境ID1")]
         public int MstKintoneEnviromentID1 { set; get; }
 
@@ -27,6 +29,7 @@ namespace KintoneDeployTool.DataAccess.DomainModel
         public virtual MstKintoneEnviroment MstKintoneEnviroment1 { set; get; }
 
         [Required]
+        [BindRequired]
         [DisplayName("Kintone環境ID2")]
         public int MstKintoneEnviromentID2 { set; get; }
 
