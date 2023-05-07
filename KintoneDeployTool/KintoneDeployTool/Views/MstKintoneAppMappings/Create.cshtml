@@ -83,6 +83,7 @@
                                 <th>
                                     @Html.DisplayNameFor(model => detail.MstKintoneAppID2)
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,6 +99,9 @@
                                     </td>
                                     <td>
                                         <select asp-for="@Model.MstKintoneAppMappingDetails[i].MstKintoneAppID2" class="form-control tom-select" asp-items="ViewBag.MstKintoneAppID2"></select>
+                                    </td>
+                                    <td>
+                                        <button class="deleteRow" id="rowNum-@i" value="行を削除">行を削除</button>
                                     </td>
                                 </tr>
                             }

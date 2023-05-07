@@ -108,7 +108,6 @@ namespace KintoneDeployTool.Controllers
             {
                 return NotFound();
             }
-            mstKintoneEnviroment.Password = String.Empty;
             return View(mstKintoneEnviroment);
         }
 
@@ -128,14 +127,19 @@ namespace KintoneDeployTool.Controllers
             {
                 try
                 {
-                    if (mstKintoneEnviroment.MstKintoneApps != null)
+                    var records = await _context.MstKintoneApp
+                            .Where(x => x.MstKintoneEnviromentID == mstKintoneEnviroment.MstKintoneEnviromentID)
+                            .ToListAsync();
+                        _context.RemoveRange(records);
+
+                    if (mstKintoneEnviroment.MstKintoneApps?.Any() ?? false)
                     {
-                        foreach (var mstKintoneApp in mstKintoneEnviroment
-                        .MstKintoneApps
-                        .Where(x => x.MstKintoneAppID == CodeConst.ADD_TARGET_ID_VALUE))
+                        foreach (var mstKintoneApp in mstKintoneEnviroment.MstKintoneApps)
                         {
-                            mstKintoneApp.MstKintoneAppID = 0;
-                            _context.Add(mstKintoneApp);
+                            if (mstKintoneApp.MstKintoneAppID == CodeConst.ADD_TARGET_ID_VALUE) {
+                                mstKintoneApp.MstKintoneAppID = 0;
+                            }
+                            await _context.AddAsync(mstKintoneApp);
                         }
                     }
 
@@ -192,11 +196,13 @@ namespace KintoneDeployTool.Controllers
             return _context.MstKintoneEnviroment.Any(e => e.MstKintoneEnviromentID == id);
         }
 
+
         public IActionResult AddDetailsOnCreate([Bind("MstKintoneEnviromentID,EnviromentName,SubDomain,UserID,Password,CreatedAt,UpdatedAt,MstKintoneApps")] MstKintoneEnviroment mstKintoneEnviroment)
         {
             AddDetailsProc(mstKintoneEnviroment);
             return View("Create", mstKintoneEnviroment);
         }
+
 
         public IActionResult AddDetailsOnEdit([Bind("MstKintoneEnviromentID,EnviromentName,SubDomain,UserID,Password,CreatedAt,UpdatedAt,MstKintoneApps")] MstKintoneEnviroment mstKintoneEnviroment)
         {

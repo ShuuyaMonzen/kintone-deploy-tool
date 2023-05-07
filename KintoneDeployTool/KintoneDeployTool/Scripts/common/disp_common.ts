@@ -6,7 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tom-select').forEach((el) => {
         new TomSelect(el as TomInput, {});
     });
+
+    //行削除をする
+    let buttons = document.getElementsByClassName('deleteRow');
+    for (var i = 0; i < buttons?.length ?? 0; i++) {
+        var button = buttons[i];
+        button.addEventListener('click', (event) => {
+            var buttonElement = event.target as HTMLElement;
+            var rowElement = buttonElement.closest("tr");
+            rowElement?.remove();
+
+            event.stopPropagation();
+        });
+    }
 });
+
+
 
 export class common {
     constructor() {
@@ -25,5 +40,5 @@ export class common {
         });
     }
 
-    
+
 };

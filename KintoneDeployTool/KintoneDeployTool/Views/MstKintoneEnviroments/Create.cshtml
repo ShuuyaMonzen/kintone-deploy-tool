@@ -4,12 +4,15 @@
 @{
     ViewData["Title"] = "Create";
 }
+
+<script type="text/javascript" src="~/js/disp_MstKintoneEnviroments.ts.js"></script>
+
 <h1>kintone環境マスタ(作成)</h1>
 <div class="description_under_title">この画面はデプロイの元・先の環境情報のマスタ管理です</div>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -29,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" />
+                @Html.PasswordFor(model => model.Password, new{@class = "form-control", Value=Model.Password})
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
@@ -58,6 +61,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => detail.AppName)
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +77,9 @@
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(model => model.MstKintoneApps[i].AppName)
+                                </td>
+                                <td>
+                                    <button class="deleteRow" id="rowNum-@i" value="行を削除">行を削除</button>
                                 </td>
                             </tr>
                         }

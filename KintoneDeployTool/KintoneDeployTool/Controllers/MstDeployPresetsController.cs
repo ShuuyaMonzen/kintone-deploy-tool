@@ -63,14 +63,14 @@ namespace KintoneDeployTool.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (mstDeployPreset.MstDeployFromToInfos != null && mstDeployPreset.MstDeployFromToInfos.Any()) {
+                if (mstDeployPreset.MstDeployFromToInfos?.Any() ?? false) {
                     foreach (var mstDeployFromToInfo in mstDeployPreset.MstDeployFromToInfos)
                     {
                         mstDeployFromToInfo.MstDeployFromToInfoId = 0;
                     }
                 }
 
-                _context.Add(mstDeployPreset);
+                await _context.AddAsync(mstDeployPreset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -116,14 +116,20 @@ namespace KintoneDeployTool.Controllers
             {
                 try
                 {
-                    if (mstDeployPreset.MstDeployFromToInfos != null && mstDeployPreset.MstDeployFromToInfos.Any())
+                    var records = await _context.MstDeployFromToInfo
+                            .Where(x => x.MstDeployPresetId == mstDeployPreset.MstDeployPresetId)
+                            .ToListAsync();
+                    _context.RemoveRange(records);
+
+                    if (mstDeployPreset.MstDeployFromToInfos?.Any() ?? false)
                     {
-                        foreach (var mstDeployFromToInfo in mstDeployPreset
-                        .MstDeployFromToInfos
-                        .Where(x => x.MstDeployFromToInfoId == CodeConst.ADD_TARGET_ID_VALUE))
+                        foreach (var mstDeployFromToInfo in mstDeployPreset.MstDeployFromToInfos)
                         {
-                            mstDeployFromToInfo.MstDeployFromToInfoId = 0;
-                            _context.Add(mstDeployFromToInfo);
+                            if (mstDeployFromToInfo.MstDeployFromToInfoId == CodeConst.ADD_TARGET_ID_VALUE)
+                            {
+                                mstDeployFromToInfo.MstDeployFromToInfoId = 0;
+                            }
+                            await _context.AddAsync(mstDeployFromToInfo);
                         }
                     }
                        

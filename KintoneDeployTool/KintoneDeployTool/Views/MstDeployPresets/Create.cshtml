@@ -55,6 +55,7 @@
                                 <th>
                                     @Html.DisplayNameFor(model => detail.DeployToMstKintoneAppID)
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,6 +71,9 @@
                                     </td>
                                     <td>
                                         <select asp-for="@Model.MstDeployFromToInfos[i].DeployToMstKintoneAppID" class="form-control tom-select" asp-items="ViewBag.DeployToMstKintoneAppID"></select>
+                                    </td>
+                                    <td>
+                                        <button class="deleteRow" id="rowNum-@i" value="行を削除">行を削除</button>
                                     </td>
                                 </tr>
                             }

@@ -139,14 +139,20 @@ namespace KintoneDeployTool.Controllers
 
             try
             {
-                if (mstKintoneAppMapping.MstKintoneAppMappingDetails != null)
+                var records = await _context.MstKintoneAppMappingDetail
+                            .Where(x => x.MstKintoneAppMappingID == mstKintoneAppMapping.MstKintoneAppMappingID)
+                            .ToListAsync();
+                _context.RemoveRange(records);
+
+                if (mstKintoneAppMapping.MstKintoneAppMappingDetails?.Any() ?? false)
                 {
-                    foreach (var MstKintoneAppMappingDetail in mstKintoneAppMapping
-                    .MstKintoneAppMappingDetails
-                    .Where(x => x.MstKintoneAppMappingDetailID == CodeConst.ADD_TARGET_ID_VALUE))
+                    foreach (var MstKintoneAppMappingDetail in mstKintoneAppMapping.MstKintoneAppMappingDetails)
                     {
-                        MstKintoneAppMappingDetail.MstKintoneAppMappingDetailID = 0;
-                        _context.Add(MstKintoneAppMappingDetail);
+                        if (MstKintoneAppMappingDetail.MstKintoneAppMappingDetailID == CodeConst.ADD_TARGET_ID_VALUE)
+                        {
+                            MstKintoneAppMappingDetail.MstKintoneAppMappingDetailID = 0;
+                        }
+                        await _context.AddAsync(MstKintoneAppMappingDetail);
                     }
                 }
 
