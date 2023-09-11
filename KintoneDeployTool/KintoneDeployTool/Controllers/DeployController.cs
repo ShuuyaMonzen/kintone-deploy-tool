@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace KintoneDeployTool.Controllers
@@ -37,12 +38,13 @@ namespace KintoneDeployTool.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await Service.GetBackup(vm);
+            var zipFilePath = await Service.GetBackup(vm);
+            var file = System.IO.File.ReadAllBytes(zipFilePath);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok();
+            return File(file, MediaTypeNames.Application.Zip, "kintoneアプリバックアップ.zip");
         }
 
         public async Task<IActionResult> RestoreBackup(DeployViewModel vm, IFormFile postedFile)

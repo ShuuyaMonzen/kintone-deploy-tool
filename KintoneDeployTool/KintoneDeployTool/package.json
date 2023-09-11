@@ -8,6 +8,7 @@
     "release": "cross-env NODE_ENV=\"production\" APP_ENV=\"production\" webpack --mode=production"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "cross-env": "^7.0.3",
     "glob": "^8.0.2",
     "ts-loader": "^9.3.1",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "file-saver": "^2.0.5",
     "spin.js": "^4.1.1",
     "sweetalert2": "^11.4.24",
     "tom-select": "2.2.2"

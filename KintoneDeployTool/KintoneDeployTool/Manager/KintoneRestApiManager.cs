@@ -1317,7 +1317,7 @@ namespace KintoneDeployTool.Manager
             var isEnviroment1 = mstKintoneAppMapping.MstKintoneEnviroment1.SubDomain == subDomain;
 
             if ((isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Any()) ||
-                !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any())
+                (!isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any()))
             {
                 throw new Exception("マッピング定義にないアプリを参照する関連テーブルがあります");
             }
@@ -2542,7 +2542,7 @@ namespace KintoneDeployTool.Manager
         #endregion
 
         #region 設定、レコードのバックアップ取得(ver2.0追加機能)
-        public static void GetBackupJsons(MstDeployPreset mstDeployPreset, string saveTargetDirectry = null)
+        public static string GetBackupJsons(MstDeployPreset mstDeployPreset, string saveTargetDirectry = null)
         {
             string envDirectoryPath = CreateSaveDirectoryEnv(saveTargetDirectry);
             foreach (var mstDeployFromToInfo in mstDeployPreset.MstDeployFromToInfos)
@@ -2620,11 +2620,13 @@ namespace KintoneDeployTool.Manager
                 false,
                 Encoding.UTF8);
             Directory.Delete(envDirectoryPath, true);
+
+            return envDirectoryPath + ".zip";
         }
 
         private static string CreateSaveDirectoryEnv(string saveTargetDirectry)
         {
-            string envDirectoryPath = saveTargetDirectry ?? Path.Combine(Directory.GetCurrentDirectory(), "backup", DateTime.Now.ToString("yyyy_MM_dd HH_mm"));
+            string envDirectoryPath = saveTargetDirectry ?? Path.Combine(Directory.GetCurrentDirectory(), "backup", DateTime.Now.ToString("yyyy_MM_dd HH_mm_ss_FF"));
             return envDirectoryPath;
         }
 

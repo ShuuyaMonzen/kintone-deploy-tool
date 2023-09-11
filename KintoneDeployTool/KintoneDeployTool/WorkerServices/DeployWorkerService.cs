@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using KintoneDeployTool.DataAccess.Const;
 using System.IO.Compression;
 using static KintoneDeployTool.Manager.KintoneRestApiManager;
+using NuGet.Packaging;
 
 namespace KintoneDeployTool.WorkerServices
 {
@@ -41,19 +42,20 @@ namespace KintoneDeployTool.WorkerServices
             return vm;
         }
 
-        public async Task<DeployViewModel> GetBackup(DeployViewModel vm)
+        public async Task<string> GetBackup(DeployViewModel vm)
         {
             try
             {
                 var trnDeployPreset = await DeployPresetRepository.GetTrnDeployPreset(vm.TrnDeployPresetId.Value);
-                KintoneRestApiManager.GetBackupJsons(trnDeployPreset);
+                var zipFilePath = KintoneRestApiManager.GetBackupJsons(trnDeployPreset);
+                return zipFilePath;
             }
             catch(Exception e)
             {
                 vm.LogMessage = e.Message;
                 ModelState.AddModelError(string.Empty, e.Message);
             }
-            return vm;
+            return null;
         }
 
         public async Task<CheckResult> GetConfirmMessage(DeployViewModel vm)
