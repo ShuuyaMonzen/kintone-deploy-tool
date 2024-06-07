@@ -11,61 +11,57 @@ document.addEventListener('DOMContentLoaded', () => {
     let deployBtns = document.querySelectorAll('.deploy_btn');
     deployBtns.forEach(deployBtn => {
         deployBtn.addEventListener('click', async (ev) => {
-            spinnerUtil.startSpinner()
-            let currentBtn = ev.target as HTMLInputElement;
-            let currentBtnId = currentBtn.id;
+            try {
+                spinnerUtil.startSpinner();
+                let currentBtn = ev.target as HTMLInputElement;
+                let currentBtnId = currentBtn.id;
 
-            // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
-            let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
-            let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
-            let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
+                // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
+                let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
+                let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
+                let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
 
-            //postする
-            let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
-            let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value + '&UrlKind=' + uniqueStrOfId;
-            var checkResult = await axios.post(targetUrlRequireCheck, null, {
-                'headers': {
-                    'Content-Type': 'application/json'
-                }
-            });
-            spinnerUtil.stopSpinner();
+                //postする
+                let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
+                let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value + '&UrlKind=' + uniqueStrOfId;
 
-
-            var stopProcess = false;
-            if (checkResult.data.isError) {
-                await Swal.fire({
-                    icon: 'error',
-                    title: 'エラー',
-                    html: checkResult.data.message,
-                    confirmButtonText: 'はい',
-                }).then(function (result) {
-                    console.log(result);
-                    stopProcess = true;
+                var checkResult = await axios.post(targetUrlRequireCheck, null, {
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            } else if (!checkResult.data.isNoProblem) {
-                await Swal.fire({
-                    icon: checkResult.data.isWarn ? 'warning' : 'info',
-                    title: checkResult.data.isWarn ? '警告' : '情報',
-                    html: checkResult.data.message,
-                    showDenyButton: checkResult.data.isWarn,
-                    confirmButtonText: 'はい',
-                    denyButtonText: 'やめる'
-                }).then(function (result) {
+
+
+                var stopProcess = false;
+                if (checkResult.data.isError) {
+                    throw {
+                        response: {
+                            data: checkResult.data.message
+                        }
+                    };
+                } else if (!checkResult.data.isNoProblem) {
+                    const result = await Swal.fire({
+                        icon: checkResult.data.isWarn ? 'warning' : 'info',
+                        title: checkResult.data.isWarn ? '警告' : '情報',
+                        html: checkResult.data.message,
+                        showDenyButton: checkResult.data.isWarn,
+                        confirmButtonText: 'はい',
+                        denyButtonText: 'やめる'
+                    });
                     console.log(result);
                     stopProcess = result.isDenied;
-                });
-            }
-            if (stopProcess) {
-                return;
-            }
-
-
-            spinnerUtil.startSpinner();
-            await axios.post(targetUrl, null, {
-                'headers': {
-                    'Content-Type': 'application/json'
                 }
-            }).then((resp) => {
+                if (stopProcess) {
+                    return;
+                }
+
+
+                let resp = await axios.post(targetUrl, null, {
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
                 spinnerUtil.stopSpinner();
                 // 成功の処理
                 Swal.fire({
@@ -73,48 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     title: '成功',
                     html: resp.data?.logMessage
                 });
-            }).catch((err) => {
-                // エラーの処理
+            } catch (err: any) {
                 console.error(err);
-                spinnerUtil.stopSpinner();
 
-                var alreadyShow = false;
-                if (err.response.data.param) {
-                    let errorMsg = err.response.data.param[0] as String;
-                    var errorDetails = errorMsg.split('{"code"');
-                    if (errorDetails.length >= 2) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: '{"code"' + errorDetails[1]
-                        });
-                        alreadyShow = true;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: errorMsg
-                        });
-                        alreadyShow = true;
-                    }
-                } else if (err.response.data[""]) {
+                if (err?.response?.data && err.response.data instanceof Blob) {
+                    const responseJsonString = await (err.response.data as Blob).text();
+                    const responseJson = JSON.parse(responseJsonString);
+                    const responseMessage = responseJson[""][0];
+                    const requestUrl = responseMessage.split('RequestUri: ')[1].split("'")[1];
+                    const subDomain = new URL(requestUrl).host.split(".").shift();
+                    const errorReasonJson = JSON.parse('{"code":' + responseMessage.split('{"code":')[1]);
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: err.response.data[""]
+                        html: "サブドメイン : " + subDomain + "<br><br>" + errorReasonJson['message']
                     });
-                    alreadyShow = true;
-                }
-
-                if (!alreadyShow) {
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
                         html: JSON.stringify(err.response.data)
                     });
-                    alreadyShow = true;
                 }
-            });
+            } finally {
+                spinnerUtil.stopSpinner();
+            }
 
         });
     })
@@ -122,63 +101,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let backupBtns = document.querySelectorAll('.backup_btn');
     backupBtns.forEach(backupBtn => {
         backupBtn.addEventListener('click', async (ev) => {
-            spinnerUtil.startSpinner()
-            let currentBtn = ev.target as HTMLInputElement;
-            let currentBtnId = currentBtn.id;
+            try {
+                spinnerUtil.startSpinner();
+                let currentBtn = ev.target as HTMLInputElement;
+                let currentBtnId = currentBtn.id;
 
-            // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
-            let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
-            let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
-            let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
+                // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
+                let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
+                let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
+                let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
 
-            //postする
-            let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
-            let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value + '&UrlKind=' + uniqueStrOfId;
-            var checkResult = await axios.post(targetUrlRequireCheck, null, {
-                'headers': {
-                    'Content-Type': 'application/json'
-                }
-            });
-            spinnerUtil.stopSpinner();
+                //postする
+                let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
+                let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value + '&UrlKind=' + uniqueStrOfId;
 
-
-            var stopProcess = false;
-            if (checkResult.data.isError) {
-                await Swal.fire({
-                    icon: 'error',
-                    title: 'エラー',
-                    html: checkResult.data.message,
-                    confirmButtonText: 'はい',
-                }).then(function (result) {
-                    console.log(result);
-                    stopProcess = true;
+                var checkResult = await axios.post(targetUrlRequireCheck, null, {
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            } else if (!checkResult.data.isNoProblem) {
-                await Swal.fire({
-                    icon: checkResult.data.isWarn ? 'warning' : 'info',
-                    title: checkResult.data.isWarn ? '警告' : '情報',
-                    html: checkResult.data.message,
-                    showDenyButton: checkResult.data.isWarn,
-                    confirmButtonText: 'はい',
-                    denyButtonText: 'やめる'
-                }).then(function (result) {
+
+
+                var stopProcess = false;
+                if (checkResult.data.isError) {
+                    throw {
+                        response: {
+                            data: checkResult.data.message
+                        }
+                    };
+                } else if (!checkResult.data.isNoProblem) {
+                    const result = await Swal.fire({
+                        icon: checkResult.data.isWarn ? 'warning' : 'info',
+                        title: checkResult.data.isWarn ? '警告' : '情報',
+                        html: checkResult.data.message,
+                        showDenyButton: checkResult.data.isWarn,
+                        confirmButtonText: 'はい',
+                        denyButtonText: 'やめる'
+                    });
                     console.log(result);
                     stopProcess = result.isDenied;
+                }
+                if (stopProcess) {
+                    return;
+                }
+
+                var resp = await axios.post(targetUrl, null, {
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            }
-            if (stopProcess) {
-                return;
-            }
-
-
-            spinnerUtil.startSpinner();
-            await axios.post(targetUrl, null, {
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                responseType: "blob"
-            }).then((resp) => {
-                spinnerUtil.stopSpinner();
                 // 成功の処理
                 let mineType = resp.headers["content-type"];
                 const disposition = resp.headers["content-disposition"];
@@ -195,48 +166,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 const blob = new Blob([resp.data], { type: mineType });
                 saveAs(blob, fileName);
-            }).catch((err) => {
-                // エラーの処理
+            } catch (err: any) {
                 console.error(err);
-                spinnerUtil.stopSpinner();
 
-                var alreadyShow = false;
-                if (err.response.data.param) {
-                    let errorMsg = err.response.data.param[0] as String;
-                    var errorDetails = errorMsg.split('{"code"');
-                    if (errorDetails.length >= 2) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: '{"code"' + errorDetails[1]
-                        });
-                        alreadyShow = true;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: errorMsg
-                        });
-                        alreadyShow = true;
-                    }
-                } else if (err.response.data[""]) {
+                if (err?.response?.data && err.response.data instanceof Blob) {
+                    const responseJsonString = await (err.response.data as Blob).text();
+                    const responseJson = JSON.parse(responseJsonString);
+                    const responseMessage = responseJson[""][0];
+                    const requestUrl = responseMessage.split('RequestUri: ')[1].split("'")[1];
+                    const subDomain = new URL(requestUrl).host.split(".").shift();
+                    const errorReasonJson = JSON.parse('{"code":' + responseMessage.split('{"code":')[1]);
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: err.response.data[""]
+                        html: "サブドメイン : " + subDomain + "<br><br>" + errorReasonJson['message']
                     });
-                    alreadyShow = true;
-                }
-
-                if (!alreadyShow) {
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
                         html: JSON.stringify(err.response.data)
                     });
-                    alreadyShow = true;
                 }
-            });
+            } finally {
+                spinnerUtil.stopSpinner();
+            }
 
         });
     })
@@ -244,115 +198,91 @@ document.addEventListener('DOMContentLoaded', () => {
     let restoreBtns = document.querySelectorAll('.restore_btn');
     restoreBtns.forEach(restoreBtn => {
         restoreBtn.addEventListener('click', async (ev) => {
-            spinnerUtil.startSpinner();
-            let currentBtn = ev.target as HTMLInputElement;
-            let currentBtnId = currentBtn.id;
+            try {
+                spinnerUtil.startSpinner();
+                let currentBtn = ev.target as HTMLInputElement;
+                let currentBtnId = currentBtn.id;
 
-            // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
-            let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
-            let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
-            let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
+                // id = 'xxx_xxx_btn' xxx_xxxの部分を取得
+                let uniqueStrOfId = currentBtnId.slice(0, (currentBtnId.length - 4));
+                let url = (document.querySelector('#' + uniqueStrOfId + '_url') as HTMLInputElement).value;
+                let targetUrl = url + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
 
-            //postする
-            let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
-            let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
-            var checkResult = await axios.post(targetUrlRequireCheck, null, {
-                'headers': {
-                    'Content-Type': 'application/json'
-                }
-            });
-            spinnerUtil.stopSpinner();
-
-
-            var stopProcess = false;
-            if (checkResult.data.isError) {
-                await Swal.fire({
-                    icon: 'error',
-                    title: 'エラー',
-                    html: checkResult.data.message,
-                    confirmButtonText: 'はい',
-                }).then(function (result) {
-                    console.log(result);
-                    stopProcess = true;
+                //postする
+                let getConfirmMessageUrl = (document.querySelector('#get_confirm_message_url') as HTMLInputElement).value;
+                let targetUrlRequireCheck = getConfirmMessageUrl + '?TrnDeployPresetId=' + (document.querySelector('#TrnDeployPresetId') as HTMLInputElement).value;
+                var checkResult = await axios.post(targetUrlRequireCheck, null, {
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            } else if (!checkResult.data.isNoProblem) {
-                await Swal.fire({
-                    icon: checkResult.data.isWarn ? 'warning' : 'info',
-                    title: checkResult.data.isWarn ? '警告' : '情報',
-                    html: checkResult.data.message,
-                    showDenyButton: checkResult.data.isWarn,
-                    confirmButtonText: 'はい',
-                    denyButtonText: 'やめる'
-                }).then(function (result) {
+
+
+                var stopProcess = false;
+                if (checkResult.data.isError) {
+                    throw {
+                        response: {
+                            data: checkResult.data.message
+                        }
+                    };
+                } else if (!checkResult.data.isNoProblem) {
+                    const result = await Swal.fire({
+                        icon: checkResult.data.isWarn ? 'warning' : 'info',
+                        title: checkResult.data.isWarn ? '警告' : '情報',
+                        html: checkResult.data.message,
+                        showDenyButton: checkResult.data.isWarn,
+                        confirmButtonText: 'はい',
+                        denyButtonText: 'やめる'
+                    });
                     console.log(result);
                     stopProcess = result.isDenied;
-                });
-            }
-            if (stopProcess) {
-                return;
-            }
-
-            spinnerUtil.startSpinner();
-            var params = new FormData();
-            let postFile = document.getElementById('restore_backup_file') as HTMLInputElement;
-            if (postFile != null && postFile.files != null && postFile.files.length > 0) {
-                params.append('postedFile', postFile.files[0]);
-            }
-
-            await axios.post(targetUrl, params, {
-                'headers': {
-                    'Content-Type': 'multipart/form-data'
                 }
-            }).then((resp) => {
-                spinnerUtil.stopSpinner();
+                if (stopProcess) {
+                    return;
+                }
+
+                var params = new FormData();
+                let postFile = document.getElementById('restore_backup_file') as HTMLInputElement;
+                if (postFile != null && postFile.files != null && postFile.files.length > 0) {
+                    params.append('postedFile', postFile.files[0]);
+                }
+
+                var resp = await axios.post(targetUrl, params, {
+                    'headers': {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
                 // 成功の処理
                 Swal.fire({
                     icon: 'success',
                     title: '成功',
                     html: resp.data?.logMessage
                 });
-            }).catch((err) => {
-                // エラーの処理
+            } catch (err: any) {
                 console.error(err);
-                spinnerUtil.stopSpinner();
 
-                var alreadyShow = false;
-                if (err.response.data.param) {
-                    let errorMsg = err.response.data.param[0] as String;
-                    var errorDetails = errorMsg.split('{"code"');
-                    if (errorDetails.length >= 2) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: '{"code"' + errorDetails[1]
-                        });
-                        alreadyShow = true;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'エラー',
-                            html: errorMsg
-                        });
-                        alreadyShow = true;
-                    }
-                } else if (err.response.data[""]) {
+                if (err?.response?.data && err.response.data instanceof Blob) {
+                    const responseJsonString = await (err.response.data as Blob).text();
+                    const responseJson = JSON.parse(responseJsonString);
+                    const responseMessage = responseJson[""][0];
+                    const requestUrl = responseMessage.split('RequestUri: ')[1].split("'")[1];
+                    const subDomain = new URL(requestUrl).host.split(".").shift();
+                    const errorReasonJson = JSON.parse('{"code":' + responseMessage.split('{"code":')[1]);
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
-                        html: err.response.data[""]
+                        html: "サブドメイン : " + subDomain + "<br><br>" + errorReasonJson['message']
                     });
-                    alreadyShow = true;
-                }
-
-                if (!alreadyShow) {
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'エラー',
                         html: JSON.stringify(err.response.data)
                     });
-                    alreadyShow = true;
                 }
-            });
+            } finally {
+                spinnerUtil.stopSpinner();
+            }
 
         });
     });

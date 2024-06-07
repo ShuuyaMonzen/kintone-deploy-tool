@@ -39,11 +39,12 @@ namespace KintoneDeployTool.Controllers
                 return BadRequest(ModelState);
             }
             var zipFilePath = await Service.GetBackup(vm);
-            var file = System.IO.File.ReadAllBytes(zipFilePath);
-            if (!ModelState.IsValid)
+            if (zipFilePath == null)
             {
                 return BadRequest(ModelState);
             }
+            var file = System.IO.File.ReadAllBytes(zipFilePath);
+            
             return File(file, MediaTypeNames.Application.Zip, "kintoneアプリバックアップ.zip");
         }
 

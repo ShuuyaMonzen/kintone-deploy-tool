@@ -36,8 +36,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -50,10 +58,18 @@ namespace KintoneDeployTool.WorkerServices
                 var zipFilePath = KintoneRestApiManager.GetBackupJsons(trnDeployPreset);
                 return zipFilePath;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return null;
         }
@@ -68,8 +84,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError("param", e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return null;
         }
@@ -84,9 +108,17 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError("param", e.Message);
-            } 
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
+            }
             return vm;
         }
 
@@ -99,8 +131,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message; 
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -114,8 +154,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -129,8 +177,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -144,8 +200,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -159,8 +223,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -174,8 +246,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -189,8 +269,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -204,8 +292,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -219,8 +315,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }
@@ -258,8 +362,16 @@ namespace KintoneDeployTool.WorkerServices
             }
             catch (Exception e)
             {
-                vm.LogMessage = e.Message;
-                ModelState.AddModelError(string.Empty, e.Message);
+                if (e is AggregateException ex)
+                {
+                    vm.LogMessage = ex.InnerException.Message;
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+                else
+                {
+                    vm.LogMessage = e.Message;
+                    ModelState.AddModelError(string.Empty, e.Message);
+                }
             }
             return vm;
         }

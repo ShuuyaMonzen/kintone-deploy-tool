@@ -17,7 +17,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.7.2",
     "file-saver": "^2.0.5",
     "spin.js": "^4.1.1",
     "sweetalert2": "^11.4.24",
