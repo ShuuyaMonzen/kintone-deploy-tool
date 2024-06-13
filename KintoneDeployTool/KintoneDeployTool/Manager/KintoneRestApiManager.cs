@@ -765,8 +765,8 @@ namespace KintoneDeployTool.Manager
                 var fieldCode = fieldCodeFieldTypePair.Key;
                 var fieldType = fieldCodeFieldTypePair.Value;
                 var val = (JObject)fromJsonObj[fieldCode];
-                if ((fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
-                   (val?["lookup"] != null))
+                if ((val == null) || (fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
+                   (val["lookup"] != null))
                 {
                     continue;
                 }
@@ -794,8 +794,8 @@ namespace KintoneDeployTool.Manager
                     var fieldCode = fieldCodeFieldTypePairInSubtable.Key;
                     var fieldType = fieldCodeFieldTypePairInSubtable.Value;
                     var val = (JObject)fromJsonObj[subtableKey]["fields"][fieldCode];
-                    if ((fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
-                        (val?["lookup"] != null))
+                    if ((val == null) || (fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
+                        (val["lookup"] != null))
                     {
                         continue;
                     }
@@ -955,8 +955,8 @@ namespace KintoneDeployTool.Manager
                 var fieldCode = fieldCodeFieldTypePair.Key;
                 var fieldType = fieldCodeFieldTypePair.Value;
                 var val = (JObject)fromJsonObj[fieldCode];
-                if ((fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
-                    (val?["lookup"] != null))
+                if ((val == null) || (fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
+                    (val["lookup"] != null))
                 {
                     continue;
                 }
@@ -985,8 +985,8 @@ namespace KintoneDeployTool.Manager
                     var fieldCode = fieldCodeFieldTypePairInSubtable.Key;
                     var fieldType = fieldCodeFieldTypePairInSubtable.Value;
                     var val = (JObject)fromJsonObj[subtableKey]["fields"][fieldCode];
-                    if ((fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
-                        (val?["lookup"] != null))
+                    if ((val == null) || (fieldType == "REFERENCE_TABLE") || (fieldType == "CALC") ||
+                        (val["lookup"] != null))
                     {
                         continue;
                     }
@@ -1339,7 +1339,7 @@ namespace KintoneDeployTool.Manager
             var isEnviroment1 = mstKintoneAppMapping.MstKintoneEnviroment1.SubDomain == subDomain;
 
             if ((isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp1.AppId == srcAppId).Any()) ||
-                !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any())
+                (!isEnviroment1 && !mstKintoneAppMapping.MstKintoneAppMappingDetails.Where(x => x.MstKintoneApp2.AppId == srcAppId).Any()))
             {
                 throw new Exception("マッピング定義にないアプリを参照するルックアップがあります");
             }

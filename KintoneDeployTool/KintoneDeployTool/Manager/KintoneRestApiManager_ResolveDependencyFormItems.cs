@@ -230,10 +230,10 @@ namespace KintoneDeployTool.Manager
                     {
                         if (expression.Contains(tempFieldCode))
                         {
-                            dependentItem.PrecedentItems.Add(
+                            dependentItem.PrecedentItems.AddRange(
                                 resolvedItem.PrecedentItems
                                 .Where(x => x.AppId == deployFromAppId && x.FieldCode == tempFieldCode)
-                                .Single()
+                                .ToList()
                             );
                         }
                     }
@@ -266,10 +266,10 @@ namespace KintoneDeployTool.Manager
                         {
                             if (expression.Contains(tempFieldCode))
                             {
-                                dependentItem.PrecedentItems.Add(
+                                dependentItem.PrecedentItems.AddRange(
                                     resolvedItem.PrecedentItems
                                     .Where(x => x.AppId == deployFromAppId && x.FieldCode == tempFieldCode)
-                                    .Single()
+                                    .ToList()
                                 );
                             }
                         }
@@ -313,10 +313,10 @@ namespace KintoneDeployTool.Manager
                     {
                         if (conditionField == tempFieldCode)
                         {
-                            dependentItem.PrecedentItems.Add(
+                            dependentItem.PrecedentItems.AddRange(
                                 resolvedItem.PrecedentItems
                                 .Where(x => x.AppId == deployFromAppId && x.FieldCode == tempFieldCode)
-                                .Single()
+                                .ToList()
                             );
                         }
                     }
@@ -330,10 +330,10 @@ namespace KintoneDeployTool.Manager
                             displayFieldsStr.Contains(tempFieldCode) ||
                             sort.Contains(tempFieldCode))
                         {
-                            dependentItem.PrecedentItems.Add(
+                            dependentItem.PrecedentItems.AddRange(
                                 resolvedItem.PrecedentItems
                                 .Where(x => x.AppId == referenceAppId && x.FieldCode == tempFieldCode)
-                                .Single()
+                                .ToList()
                             );
                         }
                     }
@@ -384,10 +384,10 @@ namespace KintoneDeployTool.Manager
                     {
                         if (fieldMappingsCopyTo.Contains(tempFieldCode))
                         {
-                            dependentItem.PrecedentItems.Add(
+                            dependentItem.PrecedentItems.AddRange(
                                 resolvedItem.PrecedentItems
                                 .Where(x => x.AppId == deployFromAppId && x.FieldCode == tempFieldCode)
-                                .Single()
+                                .ToList()
                             );
                         }
                     }
@@ -402,10 +402,10 @@ namespace KintoneDeployTool.Manager
                             filterCond.Contains(tempFieldCode) ||
                             sort.Contains(tempFieldCode))
                         {
-                            dependentItem.PrecedentItems.Add(
+                            dependentItem.PrecedentItems.AddRange(
                                 resolvedItem.PrecedentItems
                                 .Where(x => x.AppId == referenceAppId && x.FieldCode == tempFieldCode)
-                                .Single()
+                                .ToList()
                             );
                         }
                     }
@@ -457,10 +457,10 @@ namespace KintoneDeployTool.Manager
                         {
                             if (fieldMappingsCopyTo.Contains(tempFieldCode))
                             {
-                                dependentItem.PrecedentItems.Add(
+                                dependentItem.PrecedentItems.AddRange(
                                     resolvedItem.PrecedentItems
                                     .Where(x => x.AppId == deployFromAppId && x.FieldCode == tempFieldCode)
-                                    .Single()
+                                    .ToList()
                                 );
                             }
                         }
@@ -475,10 +475,10 @@ namespace KintoneDeployTool.Manager
                                 filterCond.Contains(tempFieldCode) ||
                                 sort.Contains(tempFieldCode))
                             {
-                                dependentItem.PrecedentItems.Add(
+                                dependentItem.PrecedentItems.AddRange(
                                     resolvedItem.PrecedentItems
                                     .Where(x => x.AppId == referenceAppId && x.FieldCode == tempFieldCode)
-                                    .Single()
+                                    .ToList()
                                 );
                             }
                         }

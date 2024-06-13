@@ -1,7 +1,7 @@
-﻿# A5:ER FORMAT:16
+﻿# A5:ER FORMAT:18
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.17.2 Copyright © 1997 - 2022 m.matsubara
+# A5:SQL Mk-2 Version 2.19.1 Copyright © 1997 - 2024 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -42,6 +42,7 @@ BugFixEntityWidth=0
 PName=MstKintoneEnviroment
 LName=Kintone環境マスタ
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=400
@@ -62,6 +63,7 @@ ZOrder=1
 PName=MstKintoneApp
 LName=Kintoneアプリマスタ
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=400
@@ -82,6 +84,7 @@ ZOrder=2
 PName=TrnActionLog
 LName=操作ログ
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=100
@@ -124,6 +127,7 @@ ZOrder=4
 PName=MstDeployPreset
 LName=デプロイ情報プリセット親テーブル
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=450
@@ -143,6 +147,7 @@ ZOrder=5
 PName=MstDeployFromToInfo
 LName=デプロイ情報プリセット子テーブル
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1400
@@ -228,6 +233,7 @@ ZOrder=9
 PName=MstKintoneAppMappingDetail
 LName=Kintoneアプリ対応表詳細マスタ
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1400
@@ -291,6 +297,7 @@ ZOrder=12
 PName=MstKintoneAppMapping
 LName=kintoneアプリ対応表マスタ
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1450

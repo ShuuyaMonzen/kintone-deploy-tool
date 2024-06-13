@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     };
                 } else if (!checkResult.data.isNoProblem) {
+                    spinnerUtil.stopSpinner();
                     const result = await Swal.fire({
                         icon: checkResult.data.isWarn ? 'warning' : 'info',
                         title: checkResult.data.isWarn ? '警告' : '情報',
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonText: 'はい',
                         denyButtonText: 'やめる'
                     });
+                    spinnerUtil.startSpinner();
                     console.log(result);
                     stopProcess = result.isDenied;
                 }
@@ -130,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     };
                 } else if (!checkResult.data.isNoProblem) {
+                    spinnerUtil.stopSpinner();
                     const result = await Swal.fire({
                         icon: checkResult.data.isWarn ? 'warning' : 'info',
                         title: checkResult.data.isWarn ? '警告' : '情報',
@@ -138,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonText: 'はい',
                         denyButtonText: 'やめる'
                     });
+                    spinnerUtil.startSpinner();
                     console.log(result);
                     stopProcess = result.isDenied;
                 }
@@ -226,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     };
                 } else if (!checkResult.data.isNoProblem) {
+                    spinnerUtil.stopSpinner();
                     const result = await Swal.fire({
                         icon: checkResult.data.isWarn ? 'warning' : 'info',
                         title: checkResult.data.isWarn ? '警告' : '情報',
@@ -234,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         confirmButtonText: 'はい',
                         denyButtonText: 'やめる'
                     });
+                    spinnerUtil.startSpinner();
                     console.log(result);
                     stopProcess = result.isDenied;
                 }
